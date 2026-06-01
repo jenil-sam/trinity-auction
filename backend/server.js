@@ -26,43 +26,45 @@ app.get('/items', async (req, res) => {
 });
 
 //bids
-app.post('/items', async (req, res) => {
+app.post('/bids', async (req, res) => {
     const { data, error } = await supabase
-        .from('items_duplicate')
+        .from('bids_duplicate')
         .insert(req.body);
 
     res.json({ data, error })
 
 });
 
+
+
+app.get('/bids', async (req, res) => {
+    const { data, error } = await supabase
+        .from('bids_duplicate')
+        .select()
+
+    res.json({ data, error })
+
+});
 
 //users
-app.get('/items', async (req, res) => {
+app.post('/users', async (req, res) => {
     const { data, error } = await supabase
-        .from('items_duplicate')
-        .select()
-
-    res.json({ data, error })
-
-});
-
-app.post('/items', async (req, res) => {
-    const { data, error } = await supabase
-        .from('items_duplicate')
+        .from('users_duplicate')
         .insert(req.body);
 
     res.json({ data, error })
 
 });
 
-app.get('/items', async (req, res) => {
+app.get('/users', async (req, res) => {
     const { data, error } = await supabase
-        .from('items_duplicate')
+        .from('users_duplicate')
         .select()
 
     res.json({ data, error })
 
 });
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
