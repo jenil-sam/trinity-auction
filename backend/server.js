@@ -1,15 +1,28 @@
 import express from 'express'
 import { supabase } from './supabase.js';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { DataHandler } from './socket/dataHandler.js';
+import { BidModel, ItemModel, UserModel } from './models/index.js';
+
 
 const app = express();
 const port = 3000;
+const server = createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
+});
+const dataHandler = new DataHandler(io, supabase);
 
 app.use(express.json())
 
 // items
 app.post('/items', async (req, res) => {
     const { data, error } = await supabase
-        .from('items_duplicate')
+        .from(ItemModel.tableName)
         .insert(req.body);
 
     res.json({ data, error })
@@ -18,7 +31,7 @@ app.post('/items', async (req, res) => {
 
 app.get('/items', async (req, res) => {
     const { data, error } = await supabase
-        .from('items_duplicate')
+        .from(ItemModel.tableName)
         .select()
 
     res.json({ data, error })
@@ -28,7 +41,7 @@ app.get('/items', async (req, res) => {
 //bids
 app.post('/bids', async (req, res) => {
     const { data, error } = await supabase
-        .from('bids_duplicate')
+        .from(BidModel.tableName)
         .insert(req.body);
 
     res.json({ data, error })
@@ -39,7 +52,7 @@ app.post('/bids', async (req, res) => {
 
 app.get('/bids', async (req, res) => {
     const { data, error } = await supabase
-        .from('bids_duplicate')
+        .from(BidModel.tableName)
         .select()
 
     res.json({ data, error })
@@ -49,7 +62,7 @@ app.get('/bids', async (req, res) => {
 //users
 app.post('/users', async (req, res) => {
     const { data, error } = await supabase
-        .from('users_duplicate')
+        .from(UserModel.tableName)
         .insert(req.body);
 
     res.json({ data, error })
@@ -58,13 +71,15 @@ app.post('/users', async (req, res) => {
 
 app.get('/users', async (req, res) => {
     const { data, error } = await supabase
-        .from('users_duplicate')
+        .from(UserModel.tableName)
         .select()
 
     res.json({ data, error })
 
 });
 
-app.listen(port, () => {
+dataHandler.register();
+
+server.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
