@@ -1,0 +1,30 @@
+.nav {
+  background: var(--green); color: var(--white);
+  padding: .8rem 1.75rem;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,.18);
+  gap: 1rem;
+}
+.brand { display: flex; align-items: center; gap: .65rem; }
+.brandIcon { font-size: 1.5rem; }
+.brandName { font-family: var(--font-head); font-size: 1.2rem; color: var(--gold-light); line-height: 1.2; }
+.brandSub { font-size: .68rem; color: var(--green3); text-transform: uppercase; letter-spacing: .1em; }
+.tabs { display: flex; gap: .4rem; }
+.tab {
+  background: transparent; border: 1.5px solid rgba(255,255,255,.22);
+  color: rgba(255,255,255,.8); padding: .42rem 1rem;
+  border-radius: 7px; font-size: .85rem; font-weight: 500;
+  transition: all .18s;
+}
+.tab:hover { background: rgba(255,255,255,.1); color: var(--white); }
+.tab.active { background: var(--gold); border-color: var(--gold); color: var(--white); }
+.userChip { display: flex; align-items: center; gap: .55rem; }
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: .85rem; color: var(--white); flex-shrink: 0;
+}
+.userName { font-size: .85rem; color: var(--white); font-weight: 500; }
+.churchId { font-size: .7rem; color: var(--green3); }
+.userInfo { display: flex; flex-direction: column; }
