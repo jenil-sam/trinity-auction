@@ -9,6 +9,7 @@ import { BidModel, ItemModel, UserModel } from './models/index.js';
 const app = express();
 const port = 3000;
 const server = createServer(app);
+
 const io = new Server(server, {
     cors: {
         origin: '*',
@@ -80,6 +81,6 @@ app.get('/users', async (req, res) => {
 
 dataHandler.register();
 
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
