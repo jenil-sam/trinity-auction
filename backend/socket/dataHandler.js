@@ -10,10 +10,6 @@ export class DataHandler  {
         this.io.on('connection', (socket) => {
             console.log(`Socket connected: ${socket.id}`);
 
-            socket.on('message', (payload) => {
-                this.io.emit('message', payload);
-            });
-
             socket.on('place_bid', async (payload) => {
                 await this.handlePlaceBid(socket, payload);
             });
