@@ -45,7 +45,7 @@ export default function AuthOverlays() {
             Continue with Google
           </button>
           <div className={styles.divider}><span>or</span></div>
-          <Btn variant="ghost" full onClick={handleAdminLogin}>🔐 Admin Sign In</Btn>
+          <Btn variant="ghost" full onClick={handleAdminLogin}> Admin Sign In</Btn>
           <p className={styles.demoNote}>Demo: click "Continue with Google" to sign in as a bidder</p>
         </div>
       )}

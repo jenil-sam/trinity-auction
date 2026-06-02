@@ -359,10 +359,10 @@ function SettingsTab() {
       <div className={styles.settingsGrid}>
         <Card>
           <SectionTitle>🏛️ Church Information</SectionTitle>
-          <FormGroup label="Church Name"><Input defaultValue="Grace Community Church" /></FormGroup>
+          <FormGroup label="Church Name"><Input defaultValue="Trinity Marthoma Church" /></FormGroup>
           <FormGroup label="Zelle Email / Phone"><Input defaultValue="harvest@gracecommunitychurch.org" /></FormGroup>
           <FormGroup label="Mailing Address"><Input defaultValue="123 Faith St, Houston TX 77001" /></FormGroup>
-          <FormGroup label="Check Payable To"><Input defaultValue="Grace Community Church" /></FormGroup>
+          <FormGroup label="Check Payable To"><Input defaultValue="Trinity Marthoma Church" /></FormGroup>
         </Card>
 
         <Card>
