@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=../.env server.js",
+    "start": "node --env-file=.env server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,13 +12,15 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@aws-sdk/client-ivs-realtime": "^3.1061.0",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.106.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "cookie-parser": "^1.4.6",
     "express": "^5.2.1",
-    "http": "^0.0.1-security",
-    "socket.io": "^4.8.3",
+    "google-auth-library": "^10.6.2",
+    "jsonwebtoken": "^9.0.0",
     "ws": "^8.21.0"
   }
 }

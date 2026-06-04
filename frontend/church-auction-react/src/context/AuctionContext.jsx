@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 const AuctionContext = createContext(null);
 
@@ -48,12 +50,48 @@ export function AuctionProvider({ children }) {
   const [items, setItems] = useState(INITIAL_ITEMS);
   const [liveItemId, setLiveItemId] = useState(1);
   const [currentUser, setCurrentUser] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [toasts, setToasts] = useState([]);
   const [pendingWinItem, setPendingWinItem] = useState(null);
   const [camOn, setCamOn] = useState(false);
 
   const liveItem = items.find(i => i.id === liveItemId) || null;
+
+  useEffect(() => {
+    const tryRestoreSession = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          setCurrentUser(null);
+          return;
+        }
+
+        const data = await response.json();
+
+        // Rehydrate user from the refresh response
+        setCurrentUser({
+          name: data.user.name,
+          email: data.user.email,
+          username: data.user.username,
+          churchId: data.user.church_id,
+          accessToken: data.accessToken,
+        });
+      } catch (err) {
+        console.error('Session restore failed:', err);
+        setCurrentUser(null);
+      } finally {
+        setAuthLoading(false); // 👈 always unblock rendering
+      }
+    };
+
+    tryRestoreSession();
+  }, []);
 
   const addToast = useCallback((msg, type = '') => {
     const id = Date.now();
@@ -127,6 +165,8 @@ export function AuctionProvider({ children }) {
     <AuctionContext.Provider value={{
       items, liveItem, liveItemId,
       currentUser, setCurrentUser,
+      authLoading,
+      accessToken,
       isAdmin, setIsAdmin,
       toasts,
       pendingWinItem, setPendingWinItem,

@@ -1,12 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { useAuction } from '../context/AuctionContext';
 import styles from './AuctionView.module.css';
+import LiveFeed from './LiveFeed';
 
 export default function AuctionView() {
   const { liveItem, currentUser, camOn, setCamOn, placeBid, pendingWinItem } = useAuction();
   const [feedView, setFeedView] = useState('feed'); // feed | cams
   const [selectedInc, setSelectedInc] = useState(null);
   const [bidFlash, setBidFlash] = useState(false);
+  
 
   const item = liveItem;
   const increments = item?.increments || [5, 10, 20];
@@ -28,23 +31,14 @@ export default function AuctionView() {
       <div className={styles.feedPane}>
         {/* View toggle */}
         <div className={styles.feedToggles}>
-          <button className={`${styles.vt} ${feedView === 'feed' ? styles.vtActive : ''}`} onClick={() => setFeedView('feed')}>📺 Host Feed</button>
-          <button className={`${styles.vt} ${feedView === 'cams' ? styles.vtActive : ''}`} onClick={() => setFeedView('cams')}>👥 Participants</button>
+          {/* <button className={`${styles.vt} ${feedView === 'feed' ? styles.vtActive : ''}`} onClick={() => setFeedView('feed')}>📺 Host Feed</button> */}
+          {/* <button className={`${styles.vt} ${feedView === 'cams' ? styles.vtActive : ''}`} onClick={() => setFeedView('cams')}>👥 Participants</button> */}
         </div>
         <div className={styles.liveBadge}><span className={styles.liveDot} />LIVE</div>
 
-        {feedView === 'feed' && (
-          <div className={styles.feedPlaceholder}>
-            <div className={styles.feedAvatar}>🎙️</div>
-            <div className={styles.feedTitle}>Admin Live Feed</div>
-            <div className={styles.feedSub}>
-              Connect <code>agora-rtc-sdk-ng</code> or <code>@daily-co/daily-js</code> to enable live video. Replace this div with your video element.
-            </div>
-            <div className={styles.feedBadge}>📌 Agora / Daily.co ready</div>
-          </div>
-        )}
+        {feedView === 'feed' && <LiveFeed />}
 
-        {feedView === 'cams' && (
+        {/* {feedView === 'cams' && (
           <div className={styles.camsGrid}>
             <CamTile name="Pastor Mike (Host)" isHost active icon="🎙️" />
             <CamTile name="Maria R." icon="🟢" camOn />
@@ -56,7 +50,7 @@ export default function AuctionView() {
               <span style={{ fontSize: '.75rem', color: 'rgba(255,255,255,.5)' }}>{camOn ? 'Turn off camera' : 'Turn on camera'}</span>
             </button>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* ─── RIGHT: SIDEBAR ─── */}

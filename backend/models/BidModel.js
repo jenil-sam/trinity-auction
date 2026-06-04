@@ -1,5 +1,5 @@
 export class BidModel {
-    static tableName = 'bids';
+    static tableName = 'bids_duplicate';
     static primaryKey = 'bid_id';
 
     static schema = {
