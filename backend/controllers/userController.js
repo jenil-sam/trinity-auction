@@ -125,17 +125,34 @@ class UserController {
       // issue new access token
       const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '15m' });
 
-      // rotate refresh token: revoke old, create new
+      // In development, skip rotation to avoid StrictMode double-invocation issues
+      if (process.env.NODE_ENV !== 'production') {
+        const cookieOptions = {
+          httpOnly: true,
+          secure: false,
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        };
+        res.cookie('refreshToken', token, cookieOptions); // reuse same token
+        
+        let user = null;
+        const { data: udata, error: uerr } = await supabase
+          .from(UserModel.tableName).select('*').eq('user_id', userId).single();
+        if (!uerr) user = udata;
+        
+        return res.status(200).json({ accessToken, user });
+      }
+
+      // PRODUCTION ONLY: rotate refresh token
       const newRefreshToken = jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
       const newHash = crypto.createHash('sha256').update(newRefreshToken).digest('hex');
       const newExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
-      // transaction-style: create new then revoke old
-      const { data: created, error: createErr } = await supabase
+      const { error: createErr } = await supabase
         .from(RefreshTokenModel.tableName)
         .insert({ user_id: userId, token_hash: newHash, expires_at: newExpiresAt, revoked: false })
-        .select()
-        .single();
+        .select().single();
       if (createErr) throw createErr;
 
       const { error: revokeErr } = await supabase
@@ -144,31 +161,20 @@ class UserController {
         .eq('token_hash', tokenHash);
       if (revokeErr) console.error('Failed to revoke old refresh token:', revokeErr);
 
-      // set new cookie
       const cookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        // In production we require cross-site cookies to be sent (SameSite=None).
-        // In development use 'lax' to avoid Secure requirement blocking local dev.
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: true,
+        sameSite: 'none',
         path: '/',
         maxAge: 7 * 24 * 60 * 60 * 1000,
       };
       res.cookie('refreshToken', newRefreshToken, cookieOptions);
       console.log('set new refresh cookie for user:', userId);
 
-      // also fetch user profile to return to the client for rehydration
       let user = null;
-      try {
-        const { data: udata, error: uerr } = await supabase
-          .from(UserModel.tableName)
-          .select('*')
-          .eq('user_id', userId)
-          .single();
-        if (!uerr) user = udata;
-      } catch (e) {
-        console.error('Failed to fetch user during refresh:', e);
-      }
+      const { data: udata, error: uerr } = await supabase
+        .from(UserModel.tableName).select('*').eq('user_id', userId).single();
+      if (!uerr) user = udata;
 
       return res.status(200).json({ accessToken, user });
     } catch (error) {

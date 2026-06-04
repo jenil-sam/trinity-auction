@@ -91,7 +91,7 @@ export default function PaymentModal() {
 
         {method === 'check' && (
           <div className={styles.infoBox}>
-            <div className={styles.infoRow}><span>Payable to:</span><strong>Grace Community Church</strong></div>
+            <div className={styles.infoRow}><span>Payable to:</span><strong>Trinity Marthoma Church</strong></div>
             <div className={styles.infoRow}><span>Amount:</span><strong>${amount}</strong></div>
             <div className={styles.infoRow}><span>Mail to:</span><strong>123 Faith St, Houston TX 77001</strong></div>
             <div className={styles.infoRow}><span>Deadline:</span><strong>3 business days</strong></div>
@@ -114,7 +114,7 @@ export default function PaymentModal() {
           disabled={(method !== 'stripe' && !agreed) || processing}
           style={{ marginTop: '1.1rem', padding: '.85rem', fontSize: '1rem' }}
         >
-          {processing ? '⏳ Processing…' : `Confirm Payment — $${amount}`}
+          {processing ? 'Processing…' : `Confirm Payment — $${amount}`}
         </Btn>
         <p className={styles.lockNote}>You must complete payment before returning to bid on other items</p>
       </div>

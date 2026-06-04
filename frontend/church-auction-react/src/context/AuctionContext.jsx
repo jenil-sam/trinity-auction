@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
@@ -58,35 +59,44 @@ export function AuctionProvider({ children }) {
 
   const liveItem = items.find(i => i.id === liveItemId) || null;
 
+  useEffect(() => {
+    const tryRestoreSession = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          setCurrentUser(null);
+          return;
+        }
+
+        const data = await response.json();
+
+        // Rehydrate user from the refresh response
+        setCurrentUser({
+          name: data.user.name,
+          email: data.user.email,
+          username: data.user.username,
+          churchId: data.user.church_id,
+          accessToken: data.accessToken,
+        });
+      } catch (err) {
+        console.error('Session restore failed:', err);
+        setCurrentUser(null);
+      } finally {
+        setAuthLoading(false); // 👈 always unblock rendering
+      }
+    };
+
+    tryRestoreSession();
+  }, []);
+
   const addToast = useCallback((msg, type = '') => {
     const id = Date.now();
     setToasts(t => [...t, { id, msg, type }]);
     setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3500);
-  }, []);
-
-  // on mount, try to refresh session using HttpOnly refresh cookie
-  useEffect(() => {
-    let mounted = true;
-    const init = async () => {
-      try {
-        const resp = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
-          method: 'POST',
-          credentials: 'include',
-        });
-        if (!resp.ok) return;
-        const data = await resp.json();
-        if (!mounted) return;
-        if (data.accessToken) setAccessToken(data.accessToken);
-        if (data.user) setCurrentUser(data.user);
-      } catch (err) {
-        console.debug('No active session found:', err);
-      }
-      finally {
-        if (mounted) setAuthLoading(false);
-      }
-    };
-    init();
-    return () => { mounted = false; };
   }, []);
 
   const placeBid = useCallback((incrementAmt) => {

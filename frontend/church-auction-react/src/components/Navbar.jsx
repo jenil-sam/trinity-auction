@@ -10,7 +10,7 @@ export default function Navbar({ page, setPage }) {
         <span className={styles.brandIcon}>⛪</span>
         <div>
           <div className={styles.brandName}>Harvest Auction</div>
-          <div className={styles.brandSub}>Grace Community Church</div>
+          <div className={styles.brandSub}>Trinity Marthoma Church</div>
         </div>
       </div>
 

@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useAuction } from '../context/AuctionContext';
 import { Btn, Card, FormGroup, Input, Textarea, StatusPill, SectionTitle, EmptyState } from './UI';
 import styles from './AdminPanel.module.css';
+import HostBroadcast from './HostBroadcast';
 
 const NAV = [
-  { id: 'dashboard', icon: '📊', label: 'Dashboard' },
-  { id: 'items',     icon: '🛍️', label: 'Auction Items' },
-  { id: 'live',      icon: '🔴', label: 'Live Controls' },
-  { id: 'winners',   icon: '🏆', label: 'Winners & Payments' },
-  { id: 'settings',  icon: '⚙️', label: 'Settings' },
+  { id: 'dashboard', icon: 'place-holder', label: 'Dashboard' },
+  { id: 'items', icon: 'place-holder', label: 'Auction Items' },
+  { id: 'live', icon: 'place-holder', label: 'Live Controls' },
+  { id: 'winners', icon: 'place-holder', label: 'Winners & Payments' },
+  { id: 'settings', icon: 'place-holder', label: 'Settings' },
 ];
 
 export default function AdminPanel() {
@@ -35,10 +36,10 @@ export default function AdminPanel() {
 
       <main className={styles.content}>
         {tab === 'dashboard' && <Dashboard setTab={setTab} />}
-        {tab === 'items'     && <ItemsTab />}
-        {tab === 'live'      && <LiveTab />}
-        {tab === 'winners'   && <WinnersTab />}
-        {tab === 'settings'  && <SettingsTab />}
+        {tab === 'items' && <ItemsTab />}
+        {tab === 'live' && <LiveTab />}
+        {tab === 'winners' && <WinnersTab />}
+        {tab === 'settings' && <SettingsTab />}
       </main>
     </div>
   );
@@ -64,7 +65,7 @@ function Dashboard({ setTab }) {
 
       <div className={styles.dashRow}>
         <Card style={{ flex: 1 }}>
-          <SectionTitle>🔴 Currently Live</SectionTitle>
+          <SectionTitle>Currently Live</SectionTitle>
           {liveItem ? (
             <div className={styles.liveItemSummary}>
               <div>
@@ -80,7 +81,7 @@ function Dashboard({ setTab }) {
         </Card>
 
         <Card style={{ flex: 1 }}>
-          <SectionTitle>📋 Item Status</SectionTitle>
+          <SectionTitle>Item Status</SectionTitle>
           <div className={styles.itemStatusList}>
             {items.map(i => (
               <div key={i.id} className={styles.statusRow}>
@@ -134,7 +135,7 @@ function ItemsTab() {
   const addInc = () => {
     const v = parseInt(newInc);
     if (!v || v < 1 || form.increments.includes(v)) return;
-    setForm(f => ({ ...f, increments: [...f.increments, v].sort((a,b)=>a-b) }));
+    setForm(f => ({ ...f, increments: [...f.increments, v].sort((a, b) => a - b) }));
     setNewInc('');
   };
   const save = () => {
@@ -163,14 +164,14 @@ function ItemsTab() {
             <div className={styles.itemInfo}>
               <div className={styles.itemTitle}>{item.name}</div>
               <div className={styles.itemMeta}>
-                Start: ${item.startPrice} &nbsp;·&nbsp; Current: ${item.currentBid || item.startPrice} &nbsp;·&nbsp; Increments: {item.increments.map(i => '$'+i).join(', ')} &nbsp;·&nbsp; {item.bids.length} bids
+                Start: ${item.startPrice} &nbsp;·&nbsp; Current: ${item.currentBid || item.startPrice} &nbsp;·&nbsp; Increments: {item.increments.map(i => '$' + i).join(', ')} &nbsp;·&nbsp; {item.bids.length} bids
               </div>
             </div>
             <div className={styles.itemActions}>
               <StatusPill status={item.status} />
               {item.status === 'pending' && <button className={`${styles.actionBtn} ${styles.goLive}`} onClick={() => goLive(item.id)}>Go Live</button>}
-              {item.status === 'live'    && <button className={`${styles.actionBtn} ${styles.closeBtn}`} onClick={() => closeItem(item.id)}>Close Item</button>}
-              {item.status !== 'sold'    && <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={() => openEdit(item)}>Edit</button>}
+              {item.status === 'live' && <button className={`${styles.actionBtn} ${styles.closeBtn}`} onClick={() => closeItem(item.id)}>Close Item</button>}
+              {item.status !== 'sold' && <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={() => openEdit(item)}>Edit</button>}
             </div>
           </div>
         ))}
@@ -181,14 +182,14 @@ function ItemsTab() {
           <SectionTitle>{editing === 'new' ? 'Add New Item' : `Edit: ${editing.name}`}</SectionTitle>
           <div className={styles.formGrid}>
             <FormGroup label="Item Name">
-              <Input value={form.name} onChange={e => setForm(f => ({...f, name: e.target.value}))} placeholder="e.g. Apple Pie Basket" />
+              <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Apple Pie Basket" />
             </FormGroup>
             <FormGroup label="Starting Price ($)">
-              <Input type="number" value={form.startPrice} onChange={e => setForm(f => ({...f, startPrice: e.target.value}))} placeholder="40" min="1" />
+              <Input type="number" value={form.startPrice} onChange={e => setForm(f => ({ ...f, startPrice: e.target.value }))} placeholder="40" min="1" />
             </FormGroup>
           </div>
           <FormGroup label="Description">
-            <Textarea value={form.desc} onChange={e => setForm(f => ({...f, desc: e.target.value}))} placeholder="Brief description…" />
+            <Textarea value={form.desc} onChange={e => setForm(f => ({ ...f, desc: e.target.value }))} placeholder="Brief description…" />
           </FormGroup>
           <FormGroup label="Bid Increments">
             <div className={styles.incTags}>
@@ -223,7 +224,7 @@ function LiveTab() {
   const addInc = () => {
     const v = parseInt(newInc);
     if (!v || v < 1) return;
-    setLocalIncs(p => [...p, v].sort((a,b)=>a-b));
+    setLocalIncs(p => [...p, v].sort((a, b) => a - b));
     setNewInc('');
   };
   const applyChanges = () => {
@@ -247,9 +248,9 @@ function LiveTab() {
           </div>
           <div className={styles.liveStats}>
             <LiveStat label="Current Bid" value={`$${item.currentBid || item.startPrice}`} />
-            <LiveStat label="Total Bids"  value={item.bids.length} />
-            <LiveStat label="Top Bidder"  value={item.topBidder || '—'} />
-            <LiveStat label="Church ID"   value={item.bids[0]?.churchId || '—'} />
+            <LiveStat label="Total Bids" value={item.bids.length} />
+            <LiveStat label="Top Bidder" value={item.topBidder || '—'} />
+            <LiveStat label="Church ID" value={item.bids[0]?.churchId || '—'} />
           </div>
           <div className={styles.formGrid} style={{ marginTop: '1.25rem' }}>
             <FormGroup label={`Starting Price ${item.bids.length ? '(locked — bids placed)' : '($)'}`}>
@@ -276,6 +277,11 @@ function LiveTab() {
       ) : (
         <Card><EmptyState>No item is currently live. Go to Auction Items to set one live.</EmptyState></Card>
       )}
+
+      <Card style={{ marginBottom: '1rem' }}>
+        <SectionTitle>📹 Your Broadcast</SectionTitle>
+        <HostBroadcast />
+      </Card>
 
       <Card>
         <SectionTitle>⚡ Live Bid Feed</SectionTitle>
@@ -305,15 +311,15 @@ function WinnersTab() {
   const { items, markPaid } = useAuction();
   const sold = items.filter(i => i.status === 'sold');
   const totalCollected = sold.filter(i => i.payStatus === 'paid').reduce((s, i) => s + i.currentBid, 0);
-  const totalPending   = sold.filter(i => i.payStatus !== 'paid').reduce((s, i) => s + i.currentBid, 0);
+  const totalPending = sold.filter(i => i.payStatus !== 'paid').reduce((s, i) => s + i.currentBid, 0);
 
   return (
     <div>
       <PageHeader title="Winners & Payments" sub="Track winners and payment status for sold items" />
       <div className={styles.statsGrid} style={{ gridTemplateColumns: 'repeat(3,1fr)', marginBottom: '1.25rem' }}>
-        <StatCard label="Items Sold"    value={sold.length}        color="green" />
-        <StatCard label="Collected"     value={`$${totalCollected}`} color="gold" />
-        <StatCard label="Pending"       value={`$${totalPending}`} color="gray" />
+        <StatCard label="Items Sold" value={sold.length} color="green" />
+        <StatCard label="Collected" value={`$${totalCollected}`} color="gold" />
+        <StatCard label="Pending" value={`$${totalPending}`} color="gray" />
       </div>
       <Card>
         <SectionTitle>Winner Records</SectionTitle>
@@ -359,17 +365,17 @@ function SettingsTab() {
       <div className={styles.settingsGrid}>
         <Card>
           <SectionTitle>🏛️ Church Information</SectionTitle>
-          <FormGroup label="Church Name"><Input defaultValue="Grace Community Church" /></FormGroup>
+          <FormGroup label="Church Name"><Input defaultValue="Trinity Marthoma Church" /></FormGroup>
           <FormGroup label="Zelle Email / Phone"><Input defaultValue="harvest@gracecommunitychurch.org" /></FormGroup>
           <FormGroup label="Mailing Address"><Input defaultValue="123 Faith St, Houston TX 77001" /></FormGroup>
-          <FormGroup label="Check Payable To"><Input defaultValue="Grace Community Church" /></FormGroup>
+          <FormGroup label="Check Payable To"><Input defaultValue="Trinity Marthoma Church" /></FormGroup>
         </Card>
 
         <Card>
           <SectionTitle>💳 Stripe Payments</SectionTitle>
           <FormGroup label="Publishable Key (frontend safe)"><Input placeholder="pk_live_..." /></FormGroup>
           <FormGroup label="Secret Key (server-side only)"><Input type="password" placeholder="sk_live_…" /></FormGroup>
-          <div className={styles.settingsNote}>⚠️ Never put your secret key in frontend code. Use Firebase Functions, a Node server, or Netlify Functions to process charges server-side.</div>
+          <div className={styles.settingsNote}> Never put your secret key in frontend code. Use Firebase Functions, a Node server, or Netlify Functions to process charges server-side.</div>
         </Card>
 
         <Card>
@@ -397,7 +403,7 @@ function SettingsTab() {
         <Card>
           <SectionTitle>🌐 Hosting</SectionTitle>
           <div className={styles.settingsNote} style={{ marginBottom: '.75rem' }}>
-            Recommended: <strong>Firebase Hosting</strong> — run <code>npm run build</code> then <code>firebase deploy</code>.<br/>
+            Recommended: <strong>Firebase Hosting</strong> — run <code>npm run build</code> then <code>firebase deploy</code>.<br />
             Alternative: <strong>Netlify</strong> — drag your <code>dist/</code> folder to netlify.com.
           </div>
           <FormGroup label="Custom Domain (optional)"><Input placeholder="auction.gracecommunitychurch.org" /></FormGroup>

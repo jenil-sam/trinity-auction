@@ -1,10 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from 'express'
 import cors from 'cors'
 import { supabase } from './supabase.js';
+import { createServer } from 'http';
 import { BidModel, ItemModel, UserModel } from './models/index.js';
 import userController from './controllers/userController.js';
 import { verifyJwt } from './middlewares/verifyJwt.js';
 import cookieParser from 'cookie-parser';
+import streamRoutes from "./routes/streamRoutes.js"
+// import cors from "cors";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,6 +24,10 @@ app.use(cookieParser());
 app.get('/debug/cookies', (req, res) => {
     res.json({ cookies: req.cookies || {} });
 });
+app.use("/api/stream", streamRoutes);
+
+
+console.log(process.env.AWS_REGION);
 
 // items
 app.post('/items', async (req, res) => {

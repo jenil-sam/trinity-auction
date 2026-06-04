@@ -1,101 +1,453 @@
-.layout { display: grid; grid-template-columns: 1fr 340px; height: calc(100vh - 58px); overflow: hidden; }
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  height: calc(100vh - 58px);
+  overflow: hidden;
+}
 
 /* ─── FEED PANE ─── */
-.feedPane { background: #111; position: relative; overflow: hidden; }
-.liveBadge {
-  position: absolute; top: 1rem; left: 1rem; z-index: 10;
-  background: #8B2020; color: #fff; padding: .28rem .75rem; border-radius: 4px;
-  font-size: .72rem; font-weight: 700; letter-spacing: .1em;
-  display: flex; align-items: center; gap: .4rem;
+.feedPane {
+  background: #111;
+  position: relative;
+  overflow: hidden;
 }
-.liveDot { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: blink 1s infinite; }
-@keyframes blink { 0%,100%{opacity:1}50%{opacity:.25} }
 
-.feedToggles { position: absolute; bottom: 1rem; right: 1rem; z-index: 10; display: flex; gap: .4rem; }
+.liveBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  background: #8B2020;
+  color: #fff;
+  padding: .28rem .75rem;
+  border-radius: 4px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.liveDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1
+  }
+
+  50% {
+    opacity: .25
+  }
+}
+
+.feedToggles {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 10;
+  display: flex;
+  gap: .4rem;
+}
+
 .vt {
-  background: rgba(0,0,0,.55); color: rgba(255,255,255,.75);
-  border: 1px solid rgba(255,255,255,.18); padding: .35rem .75rem;
-  border-radius: 6px; font-size: .78rem; font-family: var(--font-body);
+  background: rgba(0, 0, 0, .55);
+  color: rgba(255, 255, 255, .75);
+  border: 1px solid rgba(255, 255, 255, .18);
+  padding: .35rem .75rem;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-family: var(--font-body);
   transition: all .18s;
 }
-.vtActive { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+.vtActive {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+}
 
 .feedPlaceholder {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  height: 100%; color: rgba(255,255,255,.55); text-align: center; padding: 2rem; gap: .75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, .55);
+  text-align: center;
+  padding: 2rem;
+  gap: .75rem;
 }
-.feedAvatar { width: 100px; height: 100px; background: #1a2a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
-.feedTitle { font-family: var(--font-head); font-size: 1.1rem; color: rgba(255,255,255,.8); }
-.feedSub { font-size: .8rem; max-width: 300px; line-height: 1.6; }
-.feedSub code { color: var(--gold-light); font-size: .77rem; }
-.feedBadge { background: rgba(255,255,255,.07); padding: .4rem 1rem; border-radius: 6px; font-size: .75rem; }
 
-.camsGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; padding: 1rem; align-content: start; height: 100%; overflow-y: auto; }
+.feedAvatar {
+  width: 100px;
+  height: 100px;
+  background: #1a2a1a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.feedTitle {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, .8);
+}
+
+.feedSub {
+  font-size: .8rem;
+  max-width: 300px;
+  line-height: 1.6;
+}
+
+.feedSub code {
+  color: var(--gold-light);
+  font-size: .77rem;
+}
+
+.feedBadge {
+  background: rgba(255, 255, 255, .07);
+  padding: .4rem 1rem;
+  border-radius: 6px;
+  font-size: .75rem;
+}
+
+.camsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 1rem;
+  align-content: start;
+  height: 100%;
+  overflow-y: auto;
+}
+
 .camTile {
-  background: #1a1a1a; border-radius: 8px; aspect-ratio: 4/3;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  border: 1px solid #2a2a2a; position: relative; overflow: hidden;
+  background: #1a1a1a;
+  border-radius: 8px;
+  aspect-ratio: 4/3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #2a2a2a;
+  position: relative;
+  overflow: hidden;
 }
-.hostTile { background: #1a2a1a; border-color: #2a4a2a; }
-.meTile { border: 2px solid var(--gold-light); }
-.activeSpeaker { border: 2px solid var(--green2) !important; }
-.camName { position: absolute; bottom: .35rem; left: .4rem; font-size: .68rem; background: rgba(0,0,0,.6); color: #fff; padding: 2px 6px; border-radius: 3px; }
+
+.hostTile {
+  background: #1a2a1a;
+  border-color: #2a4a2a;
+}
+
+.meTile {
+  border: 2px solid var(--gold-light);
+}
+
+.activeSpeaker {
+  border: 2px solid var(--green2) !important;
+}
+
+.camName {
+  position: absolute;
+  bottom: .35rem;
+  left: .4rem;
+  font-size: .68rem;
+  background: rgba(0, 0, 0, .6);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
 .toggleCamTile {
-  background: #1a1a1a; border-radius: 8px; aspect-ratio: 4/3;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3rem;
-  border: 1px dashed #3a3a3a; cursor: pointer; transition: border-color .18s;
+  background: #1a1a1a;
+  border-radius: 8px;
+  aspect-ratio: 4/3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+  border: 1px dashed #3a3a3a;
+  cursor: pointer;
+  transition: border-color .18s;
 }
-.toggleCamTile:hover { border-color: var(--gold); }
+
+.toggleCamTile:hover {
+  border-color: var(--gold);
+}
 
 /* ─── SIDEBAR ─── */
-.sidebar { background: #fff; border-left: 1px solid var(--cream3); display: flex; flex-direction: column; overflow: hidden; }
+.sidebar {
+  background: #fff;
+  border-left: 1px solid var(--cream3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-.itemHeader { background: var(--green); padding: 1.1rem 1.2rem; flex-shrink: 0; }
-.itemNum { font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; color: var(--green3); margin-bottom: .2rem; }
-.itemName { font-family: var(--font-head); font-size: 1.25rem; color: var(--gold-light); line-height: 1.3; }
-.itemDesc { font-size: .8rem; color: rgba(255,255,255,.65); margin-top: .35rem; line-height: 1.55; }
+.itemHeader {
+  background: var(--green);
+  padding: 1.1rem 1.2rem;
+  flex-shrink: 0;
+}
 
-.bidDisplay { padding: 1.1rem 1.2rem; border-bottom: 1px solid var(--cream3); flex-shrink: 0; transition: background .3s; }
-.bidDisplay.flash { background: var(--green-light); }
-.bidLabel { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--brown3); margin-bottom: .15rem; }
-.bidAmount { font-family: var(--font-head); font-size: 2.6rem; color: var(--gold-dark); line-height: 1; font-weight: 700; }
-.dollar { font-size: 1.3rem; vertical-align: super; }
-.bidMeta { font-size: .8rem; color: var(--brown3); margin-top: .4rem; }
-.bidMeta strong { color: var(--brown); }
-.youBadge { background: var(--green); color: #fff; font-size: .68rem; padding: 1px 5px; border-radius: 3px; font-weight: 600; margin-left: .4rem; }
+.itemNum {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--green3);
+  margin-bottom: .2rem;
+}
 
-.winnerBanner { background: linear-gradient(135deg,var(--gold),var(--gold-dark)); padding: 1rem 1.2rem; flex-shrink: 0; text-align: center; }
-.winnerTitle { font-family: var(--font-head); font-size: 1.1rem; color: #fff; }
-.winnerSub { font-size: .82rem; color: rgba(255,255,255,.85); margin-top: .2rem; }
-.soldBanner { background: var(--cream2); padding: .85rem 1.2rem; border-bottom: 1px solid var(--cream3); flex-shrink: 0; font-size: .88rem; color: var(--brown); }
+.itemName {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  color: var(--gold-light);
+  line-height: 1.3;
+}
 
-.bidControls { padding: 1rem 1.2rem; border-bottom: 1px solid var(--cream3); flex-shrink: 0; }
-.incLabel { font-size: .78rem; color: var(--brown3); margin-bottom: .6rem; }
-.incGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: .45rem; margin-bottom: .7rem; }
+.itemDesc {
+  font-size: .8rem;
+  color: rgba(255, 255, 255, .65);
+  margin-top: .35rem;
+  line-height: 1.55;
+}
+
+.bidDisplay {
+  padding: 1.1rem 1.2rem;
+  border-bottom: 1px solid var(--cream3);
+  flex-shrink: 0;
+  transition: background .3s;
+}
+
+.bidDisplay.flash {
+  background: var(--green-light);
+}
+
+.bidLabel {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--brown3);
+  margin-bottom: .15rem;
+}
+
+.bidAmount {
+  font-family: var(--font-head);
+  font-size: 2.6rem;
+  color: var(--gold-dark);
+  line-height: 1;
+  font-weight: 700;
+}
+
+.dollar {
+  font-size: 1.3rem;
+  vertical-align: super;
+}
+
+.bidMeta {
+  font-size: .8rem;
+  color: var(--brown3);
+  margin-top: .4rem;
+}
+
+.bidMeta strong {
+  color: var(--brown);
+}
+
+.youBadge {
+  background: var(--green);
+  color: #fff;
+  font-size: .68rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  margin-left: .4rem;
+}
+
+.winnerBanner {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  padding: 1rem 1.2rem;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.winnerTitle {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.winnerSub {
+  font-size: .82rem;
+  color: rgba(255, 255, 255, .85);
+  margin-top: .2rem;
+}
+
+.soldBanner {
+  background: var(--cream2);
+  padding: .85rem 1.2rem;
+  border-bottom: 1px solid var(--cream3);
+  flex-shrink: 0;
+  font-size: .88rem;
+  color: var(--brown);
+}
+
+.bidControls {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--cream3);
+  flex-shrink: 0;
+}
+
+.incLabel {
+  font-size: .78rem;
+  color: var(--brown3);
+  margin-bottom: .6rem;
+}
+
+.incGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .45rem;
+  margin-bottom: .7rem;
+}
+
 .incBtn {
-  padding: .65rem .4rem; background: var(--cream); border: 1.5px solid var(--cream3);
-  border-radius: 8px; font-weight: 600; font-size: .88rem; color: var(--brown);
-  transition: all .18s; text-align: center;
+  padding: .65rem .4rem;
+  background: var(--cream);
+  border: 1.5px solid var(--cream3);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: .88rem;
+  color: var(--brown);
+  transition: all .18s;
+  text-align: center;
 }
-.incBtn:hover { background: var(--gold-light); border-color: var(--gold); }
-.incSelected { background: var(--gold); border-color: var(--gold-dark); color: #fff; }
-.bidBtn {
-  width: 100%; padding: .95rem; background: var(--green); color: #fff;
-  border: none; border-radius: 10px; font-family: var(--font-head);
-  font-size: 1.05rem; transition: background .18s;
-}
-.bidBtn:hover { background: var(--green2); }
 
-.bidLog { flex: 1; overflow-y: auto; padding: .9rem 1.2rem; }
-.bidLogTitle { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--brown3); margin-bottom: .7rem; font-weight: 500; }
-.noBids { font-size: .85rem; color: var(--brown3); text-align: center; padding: 1rem 0; }
-.bidRow { display: flex; justify-content: space-between; align-items: center; padding: .45rem 0; border-bottom: 1px solid var(--cream); font-size: .83rem; gap: .3rem; }
-.bidRow:last-child { border-bottom: none; }
-.myBid { background: var(--cream); border-radius: 6px; padding: .45rem .55rem !important; margin: 0 -.55rem; }
-.bidRowLeft { display: flex; align-items: center; gap: .35rem; flex-wrap: wrap; }
-.bidderName { color: var(--brown); font-weight: 500; }
-.meBadge { background: var(--gold-light); color: var(--gold-dark); font-size: .68rem; padding: 1px 5px; border-radius: 3px; font-weight: 600; }
-.topBadge { background: var(--green); color: #fff; font-size: .68rem; padding: 1px 5px; border-radius: 3px; font-weight: 600; }
-.bidRowRight { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
-.bidAmt { color: var(--green); font-weight: 600; }
-.bidTime { color: var(--brown3); font-size: .75rem; }
+.incBtn:hover {
+  background: var(--gold-light);
+  border-color: var(--gold);
+}
+
+.incSelected {
+  background: var(--gold);
+  border-color: var(--gold-dark);
+  color: #fff;
+}
+
+.bidBtn {
+  width: 100%;
+  padding: .95rem;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  transition: background .18s;
+}
+
+.bidBtn:hover {
+  background: var(--green2);
+}
+
+.bidLog {
+  flex: 1;
+  overflow-y: auto;
+  padding: .9rem 1.2rem;
+}
+
+.bidLogTitle {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--brown3);
+  margin-bottom: .7rem;
+  font-weight: 500;
+}
+
+.noBids {
+  font-size: .85rem;
+  color: var(--brown3);
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.bidRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .45rem 0;
+  border-bottom: 1px solid var(--cream);
+  font-size: .83rem;
+  gap: .3rem;
+}
+
+.bidRow:last-child {
+  border-bottom: none;
+}
+
+.myBid {
+  background: var(--cream);
+  border-radius: 6px;
+  padding: .45rem .55rem !important;
+  margin: 0 -.55rem;
+}
+
+.bidRowLeft {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  flex-wrap: wrap;
+}
+
+.bidderName {
+  color: var(--brown);
+  font-weight: 500;
+}
+
+.meBadge {
+  background: var(--gold-light);
+  color: var(--gold-dark);
+  font-size: .68rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.topBadge {
+  background: var(--green);
+  color: #fff;
+  font-size: .68rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.bidRowRight {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  flex-shrink: 0;
+}
+
+.bidAmt {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.bidTime {
+  color: var(--brown3);
+  font-size: .75rem;
+}
