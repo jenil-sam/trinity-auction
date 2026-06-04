@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuction } from '../context/AuctionContext';
 import { Btn } from './UI';
-import styles from './PaymentModal.module.css';
+import styles from '../styles/components/PaymentModal.module.css';
 
 const METHODS = [
   { id: 'stripe', icon: '💳', name: 'Card / Stripe', sub: 'Pay instantly now' },

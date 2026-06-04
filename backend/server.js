@@ -7,6 +7,7 @@ import { createServer } from 'http';
 import { BidModel, ItemModel, UserModel } from './models/index.js';
 import userController from './controllers/userController.js';
 import { verifyJwt } from './middlewares/verifyJwt.js';
+import rateLimiter from './middlewares/rateLimiter.js';
 import cookieParser from 'cookie-parser';
 import streamRoutes from "./routes/streamRoutes.js"
 // import cors from "cors";
@@ -89,9 +90,10 @@ app.get('/users', async (req, res) => {
 });
 
 // Note: `authenticateToken` middleware not implemented yet. Call controller directly.
-app.post('/auth/google', userController.authenticateUser.bind(userController));
-app.post('/auth/complete-onboarding', verifyJwt, userController.completeOnboarding.bind(userController));
-app.post('/auth/refresh', userController.refreshToken.bind(userController));
+// Apply simple rate limiting to auth endpoints
+app.post('/auth/google', rateLimiter({ windowMs: 60 * 1000, max: 10 }), userController.authenticateUser.bind(userController));
+app.post('/auth/complete-onboarding', rateLimiter({ windowMs: 60 * 1000, max: 20 }), verifyJwt, userController.completeOnboarding.bind(userController));
+app.post('/auth/refresh', rateLimiter({ windowMs: 60 * 1000, max: 30 }), userController.refreshToken.bind(userController));
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

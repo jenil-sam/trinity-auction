@@ -1,4 +1,4 @@
-import styles from './UI.module.css';
+import styles from '../styles/components/UI.module.css';
 
 export function Btn({ children, variant = 'primary', full, onClick, disabled, style, type = 'button' }) {
   const cls = [styles.btn, styles[variant], full ? styles.full : ''].filter(Boolean).join(' ');

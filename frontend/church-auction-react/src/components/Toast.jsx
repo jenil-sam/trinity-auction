@@ -1,5 +1,5 @@
 import { useAuction } from '../context/AuctionContext';
-import styles from './Toast.module.css';
+import styles from '../styles/components/Toast.module.css';
 
 export default function ToastContainer() {
   const { toasts } = useAuction();

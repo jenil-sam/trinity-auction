@@ -1,5 +1,5 @@
 import { useAuction } from '../context/AuctionContext';
-import styles from './Navbar.module.css';
+import styles from '../styles/components/Navbar.module.css';
 
 export default function Navbar({ page, setPage }) {
   const { currentUser, isAdmin } = useAuction();

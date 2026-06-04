@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useAuction } from '../context/AuctionContext';
 import { Btn, FormGroup, Input } from './UI';
-import styles from './AuthOverlays.module.css';
+import styles from '../styles/components/AuthOverlays.module.css';
 import { GoogleLogin } from "@react-oauth/google";
 
 export default function AuthOverlays() {

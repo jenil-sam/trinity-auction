@@ -1,50 +1,11 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 const AuctionContext = createContext(null);
 
-const INITIAL_ITEMS = [
-  {
-    id: 1, name: 'Hand-Quilted Harvest Blanket',
-    desc: 'Lovingly crafted by the Women\'s Ministry. One-of-a-kind autumn pattern with church emblem embroidered in the center.',
-    startPrice: 40, currentBid: 85, status: 'live',
-    increments: [5, 10, 20],
-    bids: [
-      { user: 'Maria R.', churchId: '021', amount: 85, time: '7:42 PM', uid: 'u2' },
-      { user: 'James T.', churchId: '055', amount: 75, time: '7:40 PM', uid: 'u3' },
-      { user: 'Sarah K.', churchId: '008', amount: 60, time: '7:38 PM', uid: 'u4' },
-      { user: 'Maria R.', churchId: '021', amount: 50, time: '7:35 PM', uid: 'u2' },
-    ],
-    topBidder: 'Maria R.', topBidderUid: 'u2', winner: null, payStatus: null,
-  },
-  {
-    id: 2, name: 'Apple Pie Basket (6 Pies)',
-    desc: 'Six homemade apple pies from Sister Agnes — a legendary recipe passed down three generations.',
-    startPrice: 30, currentBid: 0, status: 'pending',
-    increments: [5, 10, 25], bids: [], topBidder: null, topBidderUid: null, winner: null, payStatus: null,
-  },
-  {
-    id: 3, name: 'Weekend Cabin Getaway',
-    desc: '2-night stay at Lake Conroe donated by the Henderson family. Sleeps 6, full kitchen, kayaks included.',
-    startPrice: 150, currentBid: 0, status: 'pending',
-    increments: [10, 25, 50], bids: [], topBidder: null, topBidderUid: null, winner: null, payStatus: null,
-  },
-  {
-    id: 4, name: 'Custom Family Portrait',
-    desc: 'Oil painting by Sister Elena. 16×20 canvas, delivered in 3–4 weeks. Choose your style.',
-    startPrice: 80, currentBid: 0, status: 'pending',
-    increments: [5, 10, 20], bids: [], topBidder: null, topBidderUid: null, winner: null, payStatus: null,
-  },
-  {
-    id: 5, name: 'Gift Card Bundle ($200)',
-    desc: 'Collection of local Houston restaurant and store gift cards — Whataburger, HEB, and more.',
-    startPrice: 100, currentBid: 165, status: 'sold',
-    increments: [5, 10, 20],
-    bids: [{ user: 'David P.', churchId: '012', amount: 165, time: '6:55 PM', uid: 'u5' }],
-    topBidder: 'David P.', topBidderUid: 'u5', winner: 'David P.', payStatus: 'paid',
-  },
-];
+const INITIAL_ITEMS = [];
 
 export function AuctionProvider({ children }) {
   const [items, setItems] = useState(INITIAL_ITEMS);
@@ -60,37 +21,8 @@ export function AuctionProvider({ children }) {
   const liveItem = items.find(i => i.id === liveItemId) || null;
 
   useEffect(() => {
-    const tryRestoreSession = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
-          method: 'POST',
-          credentials: 'include',
-        });
-
-        if (!response.ok) {
-          setCurrentUser(null);
-          return;
-        }
-
-        const data = await response.json();
-
-        // Rehydrate user from the refresh response
-        setCurrentUser({
-          name: data.user.name,
-          email: data.user.email,
-          username: data.user.username,
-          churchId: data.user.church_id,
-          accessToken: data.accessToken,
-        });
-      } catch (err) {
-        console.error('Session restore failed:', err);
-        setCurrentUser(null);
-      } finally {
-        setAuthLoading(false); // 👈 always unblock rendering
-      }
-    };
-
-    tryRestoreSession();
+    // Session restore handled centrally in App to avoid duplicate requests
+    setAuthLoading(false);
   }, []);
 
   const addToast = useCallback((msg, type = '') => {

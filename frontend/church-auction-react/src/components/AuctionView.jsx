@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { useAuction } from '../context/AuctionContext';
-import styles from './AuctionView.module.css';
+import styles from '../styles/components/AuctionView.module.css';
 import LiveFeed from './LiveFeed';
 
 export default function AuctionView() {

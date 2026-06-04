@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuction } from '../context/AuctionContext';
 import { Btn, Card, FormGroup, Input, Textarea, StatusPill, SectionTitle, EmptyState } from './UI';
-import styles from './AdminPanel.module.css';
+import styles from '../styles/components/AdminPanel.module.css';
 import HostBroadcast from './HostBroadcast';
 
 const NAV = [
