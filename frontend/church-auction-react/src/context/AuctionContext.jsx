@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 const AuctionContext = createContext(null);
 
@@ -48,6 +49,8 @@ export function AuctionProvider({ children }) {
   const [items, setItems] = useState(INITIAL_ITEMS);
   const [liveItemId, setLiveItemId] = useState(1);
   const [currentUser, setCurrentUser] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [toasts, setToasts] = useState([]);
   const [pendingWinItem, setPendingWinItem] = useState(null);
@@ -59,6 +62,31 @@ export function AuctionProvider({ children }) {
     const id = Date.now();
     setToasts(t => [...t, { id, msg, type }]);
     setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3500);
+  }, []);
+
+  // on mount, try to refresh session using HttpOnly refresh cookie
+  useEffect(() => {
+    let mounted = true;
+    const init = async () => {
+      try {
+        const resp = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+        });
+        if (!resp.ok) return;
+        const data = await resp.json();
+        if (!mounted) return;
+        if (data.accessToken) setAccessToken(data.accessToken);
+        if (data.user) setCurrentUser(data.user);
+      } catch (err) {
+        console.debug('No active session found:', err);
+      }
+      finally {
+        if (mounted) setAuthLoading(false);
+      }
+    };
+    init();
+    return () => { mounted = false; };
   }, []);
 
   const placeBid = useCallback((incrementAmt) => {
@@ -127,6 +155,8 @@ export function AuctionProvider({ children }) {
     <AuctionContext.Provider value={{
       items, liveItem, liveItemId,
       currentUser, setCurrentUser,
+      authLoading,
+      accessToken,
       isAdmin, setIsAdmin,
       toasts,
       pendingWinItem, setPendingWinItem,

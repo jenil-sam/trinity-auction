@@ -1,5 +1,5 @@
 export class ItemModel {
-    static tableName = 'items';
+    static tableName = 'items_duplicate';
     static primaryKey = 'item_id';
     static schema = {
         item_id: { type: 'int8', primary: true, identity: true },

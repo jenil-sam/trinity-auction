@@ -9,8 +9,12 @@ import ToastContainer from './components/Toast';
 
 function AppInner() {
   const { currentUser, isAdmin } = useAuction();
+  const { authLoading } = useAuction();
+  // NOTE: useAuction() should be called once; keep destructuring together to avoid extra renders.
+  // Combine into a single call to prevent multiple hook reads.
+  // const { currentUser, isAdmin, authLoading } = useAuction();
   const [page, setPage] = useState('auction');
-
+  if (authLoading) return null;
   return (
     <>
       <AuthOverlays />
