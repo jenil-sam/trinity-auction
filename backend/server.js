@@ -6,6 +6,7 @@ import { supabase } from './supabase.js';
 import { createServer } from 'http';
 import { BidModel, ItemModel, UserModel } from './models/index.js';
 import userController from './controllers/userController.js';
+import bidController from './controllers/bidController.js';
 import { verifyJwt } from './middlewares/verifyJwt.js';
 import rateLimiter from './middlewares/rateLimiter.js';
 import cookieParser from 'cookie-parser';
@@ -50,14 +51,7 @@ app.get('/items', async (req, res) => {
 });
 
 //bids
-app.post('/bids', async (req, res) => {
-    const { data, error } = await supabase
-        .from(BidModel.tableName)
-        .insert(req.body);
-
-    res.json({ data, error })
-
-});
+app.post('/bids', verifyJwt, bidController.placeBid.bind(bidController));
 
 
 

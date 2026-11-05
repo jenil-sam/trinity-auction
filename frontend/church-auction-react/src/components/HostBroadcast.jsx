@@ -2,8 +2,10 @@ import { Stage, SubscribeType } from "amazon-ivs-web-broadcast";
 import { useEffect, useRef, useState } from "react";
 import { LocalStageStream } from "amazon-ivs-web-broadcast";
 import '../css/HostBroadcast.css';
+import { useAuction } from '../context/AuctionContext';
 
 export default function HostBroadcast() {
+  const { accessToken } = useAuction();
   const videoRef = useRef(null);
   const [token, setToken] = useState(null);
   const [camOn, setCamOn] = useState(true);
@@ -13,17 +15,18 @@ export default function HostBroadcast() {
   const stageRef = useRef(null);
 
   useEffect(() => {
+    if (!accessToken) return;
     const fetchToken = async () => {
+      // the server decides the role from the signed in user
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stream/token`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ role: 'HOST' })
+        headers: { Authorization: `Bearer ${accessToken}` }
       });
       const data = await response.json();
       setToken(data.token);
     };
     fetchToken();
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => {
     if (!token) return;
